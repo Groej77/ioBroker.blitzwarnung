@@ -6,118 +6,60 @@
 ![Number of Installations](https://iobroker.live/badges/blitzwarnung-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/blitzwarnung-stable.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.blitzwarnung.png?downloads=true)](https://nodei.co/npm/iobroker.blitzwarnung/)
+**Tests:** ![Test and Release](https://github.com/Groej77/ioBroker.blitzwarnung/workflows/Test%20and%20Release/badge.svg)
 
-**Tests:** ![Test and Release](https://github.com/groej77/ioBroker.blitzwarnung/workflows/Test%20and%20Release/badge.svg)
+## Gewitter-/Blitzwarnung ueber Blitzortung.org
 
-## blitzwarnung adapter for ioBroker
+Dieser Adapter verbindet sich mit dem kostenlosen Live-Feed von [Blitzortung.org](https://www.blitzortung.org/)
+(einem Community-Blitzortungsnetzwerk) und meldet erkannte Blitzeinschlaege in der Naehe deiner Wohnung -
+optional zusaetzlich in der Naehe eines aktuellen Standorts (z.B. per Handy-GPS/MacroDroid).
 
-Gewitter-/Blitzwarnung ueber den Blitzortung.org Live-Feed mit Telegram- und Pushover-Benachrichtigung
+Es gibt zwei Warnstufen:
+* **Hinweis** - Blitz im weiteren Umkreis (Standard 20 km)
+* **Warnung** - Blitz ganz in der Naehe (Standard 5 km)
 
-## Developer manual
-This section is intended for the developer. It can be deleted later.
+Meldungen werden per **Telegram** verschickt. Fuer die Warnstufe kann zusaetzlich **Pushover** mit
+"Emergency"-Prioritaet genutzt werden - das durchdringt auch den Stumm-/Nicht-stoeren-Modus des Handys
+und wiederholt sich, bis man die Meldung bestaetigt.
 
-### DISCLAIMER
+### Voraussetzungen
+* Ein eingerichteter [Telegram-Adapter](https://github.com/iobroker-community-adapters/ioBroker.telegram) (fuer Benachrichtigungen)
+* Optional: ein eingerichteter [Pushover-Adapter](https://github.com/ioBroker/ioBroker.pushover) (fuer die dringliche Warnstufe)
+* Optional: zwei States mit dem aktuellen Standort (Breiten-/Laengengrad), z.B. per MacroDroid/Handy-GPS, wenn
+  die zusaetzliche Standort-Ueberwachung genutzt werden soll
 
-Please make sure that you consider copyrights and trademarks when you use names or logos of a company and add a disclaimer to your README.
-You can check other adapters for examples or ask in the developer community. Using a name or logo of a company without permission may cause legal problems for you.
+### Konfiguration
+* **Standort (Wohnung)** - Breiten-/Laengengrad deiner Wohnung. `0 / 0` uebernimmt automatisch den
+  ioBroker-Systemstandort (den, der auch fuer Sonnenauf-/untergang genutzt wird).
+* **Warnstufen** - Radien fuer Hinweis/Warnung, Cooldown zwischen Meldungen gleicher Stufe, nach welcher
+  Ruhezeit ein neues Ereignis beginnt, wie alt ein Blitz maximal sein darf, und wann die Statistik-States
+  zurueckgesetzt werden.
+* **Telegram** - an/aus, Telegram-Instanz, State mit dem Telegram-Empfaenger (Username).
+* **Pushover (optional, nur Warnstufe)** - an/aus, Pushover-Instanz, Wiederholungs-/Timeout-Zeiten fuer die
+  Emergency-Prioritaet.
+* **Aktueller Standort (optional)** - an/aus, States mit Breiten-/Laengengrad des aktuellen Standorts, ab
+  welcher Entfernung von der Wohnung man als "unterwegs" gilt, und wie alt der Standort maximal sein darf.
+* **Verbindung (erweitert)** - Reconnect-Wartezeit, Heartbeat-Intervall, Debug-Zusammenfassungs-Intervall.
 
-### Getting started
+### States
+| State | Beschreibung |
+|-------|--------------|
+| `info.connection` | Verbindung zu Blitzortung.org steht |
+| `home.level` | Aktuelle Warnstufe fuer die Wohnung (0 = ruhig, 1 = Hinweis, 2 = Warnung) |
+| `home.distanceKm` | Entfernung des letzten relevanten Blitzes zur Wohnung (km) |
+| `home.distanceText` | Dieselbe Entfernung als fertiger Text, z.B. fuer VIS (inkl. Text ohne aktuelles Gewitter) |
+| `home.lightningCountToday` | Anzahl relevanter Blitze seit Mitternacht im Umkreis der Wohnung |
+| `phone.away` | Ob der aktuelle Standort gerade als "unterwegs" gilt |
+| `phone.level` | Aktuelle Warnstufe fuer den aktuellen Standort |
+| `phone.distanceKm` | Entfernung des letzten relevanten Blitzes zum aktuellen Standort (km) |
 
-You are almost done, only a few steps left:
-1. Create a new repository on GitHub with the name `ioBroker.blitzwarnung`
-1. Initialize the current folder as a new git repository:  
-    ```bash
-    git init -b main
-    git add .
-    git commit -m "Initial commit"
-    ```
-1. Link your local repository with the one on GitHub:  
-    ```bash
-    git remote add origin https://github.com/groej77/ioBroker.blitzwarnung
-    ```
-
-1. Push all files to the GitHub repo:  
-    ```bash
-    git push origin main
-    ```
-1. Add a new secret under https://github.com/groej77/ioBroker.blitzwarnung/settings/secrets. It must be named `AUTO_MERGE_TOKEN` and contain a personal access token with push access to the repository, e.g. yours. You can create a new token under https://github.com/settings/tokens.
-
-1. Head over to [main.js](main.js) and start programming!
-
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
-
-### State Roles
-When creating state objects, it is important to use the correct role for the state. The role defines how the state should be interpreted by visualizations and other adapters. For a list of available roles and their meanings, please refer to the [state roles documentation](https://www.iobroker.net/#en/documentation/dev/stateroles.md).
-
-**Important:** Do not invent your own custom role names. If you need a role that is not part of the official list, please contact the ioBroker developer community for guidance and discussion about adding new roles.
-
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description |
-|-------------|-------------|
-| `test:js` | Executes the tests you defined in `*.test.js` files. |
-| `test:package` | Ensures your `package.json` and `io-package.json` are valid. |
-| `test:integration` | Tests the adapter startup with an actual instance of ioBroker. |
-| `test` | Performs a minimal test run on package files and your tests. |
-| `check` | Performs a type-check on your code (without compiling anything). |
-| `lint` | Runs `ESLint` to check your code for formatting errors and potential bugs. |
-| `translate` | Translates texts in your adapter to all required languages, see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-translations) for more details. |
-| `release` | Creates a new release, see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#usage) for more details. |
-
-### Writing tests
-When done right, testing code is invaluable, because it gives you the 
-confidence to change your code while knowing exactly if and when 
-something breaks. A good read on the topic of test-driven development 
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92. 
-Although writing tests before the code might seem strange at first, but it has very 
-clear upsides.
-
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-Using GitHub Actions, you can enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. We **strongly recommend** that you do. The necessary steps are described in `.github/workflows/test-and-release.yml`.
-
-Since you installed the release script, you can create a new
-release simply by calling:
+### Installation
+Der Adapter ist (noch) nicht im offiziellen ioBroker-Repository gelistet. Installation erfolgt ueber die
+Admin-Oberflaeche (Adapter-Reiter -> GitHub-Icon -> "Benutzerdefiniert") oder per Kommandozeile:
 ```bash
-npm run release
+iobroker url https://github.com/Groej77/ioBroker.blitzwarnung
 ```
-Additional command line options for the release script are explained in the
-[release-script documentation](https://github.com/AlCalzone/release-script#command-line).
-
-To get your adapter released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a GitHub repository for your adapter if you haven't already
-1. Push your code to the GitHub repository
-1. Use the ioBroker Admin interface or command line to install the adapter from GitHub:
-    * **Via Admin UI**: Go to the "Adapters" tab, click on "Custom Install" (GitHub icon), and enter your repository URL:
-        ```
-        https://github.com/groej77/ioBroker.blitzwarnung
-        ```
-        You can also install from a specific branch by adding `#branchname` at the end:
-        ```
-        https://github.com/groej77/ioBroker.blitzwarnung#dev
-        ```
-    * **Via Command Line**: Install using the `iob` command:
-        ```bash
-        iob url https://github.com/groej77/ioBroker.blitzwarnung
-        ```
-        Or from a specific branch:
-        ```bash
-        iob url https://github.com/groej77/ioBroker.blitzwarnung#dev
-        ```
-
-For later updates:
-1. Push your changes to GitHub
-1. Repeat the installation steps above (via Admin UI or `iob url` command) to update the adapter
+Derselbe Weg funktioniert auch fuer spaetere Updates, nachdem Aenderungen ins Repository gepusht wurden.
 
 ## Changelog
 <!--
@@ -126,7 +68,12 @@ For later updates:
 -->
 
 ### **WORK IN PROGRESS**
-* (groej77) initial release
+
+### 0.0.2 (2026-09-20)
+* (Groej77) Neues Adapter-Icon (Wolke mit Blitz statt Zauberer)
+
+### 0.0.1 (2026-09-20)
+* (Groej77) initial release
 
 ## License
 MIT License
