@@ -55,7 +55,7 @@ und wiederholt sich, bis man die Meldung bestaetigt.
 
 ### Installation
 Der Adapter ist (noch) nicht im offiziellen ioBroker-Repository gelistet. Installation erfolgt ueber die
-Admin-Oberflaeche (Adapter-Reiter -> GitHub-Icon -> "Benutzerdefiniert") oder per Kommandozeile:
+Admin-Oberflaeche (Expertenmodus -> Adapter-Reiter -> GitHub-Icon -> "Benutzerdefiniert") oder per Kommandozeile:
 ```bash
 iobroker url https://github.com/Groej77/ioBroker.blitzwarnung
 ```
