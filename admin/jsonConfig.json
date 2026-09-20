@@ -2,25 +2,197 @@
     "i18n": true,
     "type": "panel",
     "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
-            "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4,
-            "xl": 4
+        "_headerHome": {
+            "type": "header",
+            "text": "Standort (Wohnung)",
+            "size": 3,
+            "newLine": true
         },
-        "option2": {
-            "type": "text",
-            "label": "option2",
+        "_infoHome": {
+            "type": "staticText",
+            "text": "0 / 0 = automatisch aus den ioBroker-Systemeinstellungen (Standort fuer Sonnenauf-/untergang) uebernehmen.",
+            "newLine": true
+        },
+        "homeLat": {
+            "type": "number",
+            "label": "Breitengrad (Latitude)",
             "newLine": true,
-            "xs": 12,
-            "sm": 12,
-            "md": 6,
-            "lg": 4,
-            "xl": 4
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "homeLon": {
+            "type": "number",
+            "label": "Laengengrad (Longitude)",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+
+        "_headerLevels": {
+            "type": "header",
+            "text": "Warnstufen",
+            "size": 3,
+            "newLine": true
+        },
+        "radiusInfoKm": {
+            "type": "number",
+            "label": "Hinweis ab (km)",
+            "newLine": true,
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "radiusWarnKm": {
+            "type": "number",
+            "label": "Warnung ab (km)",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "cooldownMinutes": {
+            "type": "number",
+            "label": "Cooldown zwischen Meldungen gleicher Stufe (Min)",
+            "newLine": true,
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "quietResetMinutes": {
+            "type": "number",
+            "label": "Neues Ereignis nach Ruhe von (Min)",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "staleEventSeconds": {
+            "type": "number",
+            "label": "Blitze aelter als (Sek) werden ignoriert",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "statsClearAfterMinutes": {
+            "type": "number",
+            "label": "Statistik zuruecksetzen nach Ruhe von (Min)",
+            "newLine": true,
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "statsNoStormText": {
+            "type": "text",
+            "label": "Anzeigetext ohne aktuelles Gewitter",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+
+        "_headerTelegram": {
+            "type": "header",
+            "text": "Telegram",
+            "size": 3,
+            "newLine": true
+        },
+        "useTelegram": {
+            "type": "checkbox",
+            "label": "Meldungen per Telegram senden",
+            "newLine": true,
+            "xs": 12, "sm": 12, "md": 6, "lg": 4
+        },
+        "telegramInstance": {
+            "type": "instance",
+            "adapter": "telegram",
+            "label": "Telegram-Instanz",
+            "newLine": true,
+            "hidden": "!data.useTelegram",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "telegramAdminState": {
+            "type": "objectId",
+            "types": ["state"],
+            "label": "State mit Telegram-Empfaenger (Username)",
+            "hidden": "!data.useTelegram",
+            "xs": 12, "sm": 6, "md": 6, "lg": 4
+        },
+
+        "_headerPushover": {
+            "type": "header",
+            "text": "Pushover (optional, nur Warnstufe)",
+            "size": 3,
+            "newLine": true
+        },
+        "usePushover": {
+            "type": "checkbox",
+            "label": "Warnstufe zusaetzlich per Pushover (Emergency) senden",
+            "newLine": true,
+            "xs": 12, "sm": 12, "md": 6, "lg": 4
+        },
+        "pushoverInstance": {
+            "type": "instance",
+            "adapter": "pushover",
+            "label": "Pushover-Instanz",
+            "newLine": true,
+            "hidden": "!data.usePushover",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "pushoverRetrySeconds": {
+            "type": "number",
+            "label": "Wiederholung alle (Sek)",
+            "hidden": "!data.usePushover",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "pushoverExpireSeconds": {
+            "type": "number",
+            "label": "Aufgeben nach (Sek)",
+            "hidden": "!data.usePushover",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+
+        "_headerPhone": {
+            "type": "header",
+            "text": "Aktueller Standort (optional)",
+            "size": 3,
+            "newLine": true
+        },
+        "usePhoneLocation": {
+            "type": "checkbox",
+            "label": "Zusaetzliche Warnung fuer aktuellen Standort (z.B. Handy-GPS)",
+            "newLine": true,
+            "xs": 12, "sm": 12, "md": 6, "lg": 4
+        },
+        "phoneLatState": {
+            "type": "objectId",
+            "types": ["state"],
+            "label": "State mit Breitengrad",
+            "newLine": true,
+            "hidden": "!data.usePhoneLocation",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "phoneLonState": {
+            "type": "objectId",
+            "types": ["state"],
+            "label": "State mit Laengengrad",
+            "hidden": "!data.usePhoneLocation",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "awayThresholdKm": {
+            "type": "number",
+            "label": "Gilt als \"unterwegs\" ab (km von der Wohnung)",
+            "newLine": true,
+            "hidden": "!data.usePhoneLocation",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "phoneLocationMaxAgeMinutes": {
+            "type": "number",
+            "label": "Standort gilt als veraltet nach (Min)",
+            "hidden": "!data.usePhoneLocation",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+
+        "_headerConnection": {
+            "type": "header",
+            "text": "Verbindung (erweitert)",
+            "size": 3,
+            "newLine": true
+        },
+        "reconnectDelaySeconds": {
+            "type": "number",
+            "label": "Reconnect-Wartezeit (Sek)",
+            "newLine": true,
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "heartbeatIntervalSeconds": {
+            "type": "number",
+            "label": "Heartbeat-Intervall (Sek)",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "debugSummaryIntervalSeconds": {
+            "type": "number",
+            "label": "Debug-Zusammenfassung alle (Sek, 0 = aus)",
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
         }
     }
 }

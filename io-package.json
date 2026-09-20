@@ -85,8 +85,30 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "homeLat": 0,
+        "homeLon": 0,
+        "radiusInfoKm": 20,
+        "radiusWarnKm": 5,
+        "cooldownMinutes": 3,
+        "quietResetMinutes": 15,
+        "staleEventSeconds": 120,
+        "statsClearAfterMinutes": 30,
+        "statsNoStormText": "kein Gewitter",
+        "useTelegram": true,
+        "telegramInstance": "",
+        "telegramAdminState": "",
+        "usePushover": false,
+        "pushoverInstance": "",
+        "pushoverRetrySeconds": 30,
+        "pushoverExpireSeconds": 300,
+        "usePhoneLocation": false,
+        "phoneLatState": "",
+        "phoneLonState": "",
+        "awayThresholdKm": 5,
+        "phoneLocationMaxAgeMinutes": 20,
+        "reconnectDelaySeconds": 10,
+        "heartbeatIntervalSeconds": 30,
+        "debugSummaryIntervalSeconds": 60
     },
     "objects": [],
     "instanceObjects": [
@@ -108,6 +130,125 @@
                 "read": true,
                 "write": false,
                 "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "home",
+            "type": "channel",
+            "common": {
+                "name": "Wohnung"
+            },
+            "native": {}
+        },
+        {
+            "_id": "home.level",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Aktuelle Warnstufe (Wohnung)",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0,
+                "states": {
+                    "0": "ruhig",
+                    "1": "Hinweis",
+                    "2": "Warnung"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "home.distanceKm",
+            "type": "state",
+            "common": {
+                "role": "value.distance",
+                "name": "Entfernung des letzten relevanten Blitzes (Wohnung)",
+                "type": "number",
+                "unit": "km",
+                "read": true,
+                "write": false,
+                "def": null
+            },
+            "native": {}
+        },
+        {
+            "_id": "home.distanceText",
+            "type": "state",
+            "common": {
+                "role": "text",
+                "name": "Entfernung als Text (fuer VIS)",
+                "type": "string",
+                "read": true,
+                "write": false,
+                "def": ""
+            },
+            "native": {}
+        },
+        {
+            "_id": "home.lightningCountToday",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Blitze heute im Umkreis der Wohnung",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0
+            },
+            "native": {}
+        },
+        {
+            "_id": "phone",
+            "type": "channel",
+            "common": {
+                "name": "Aktueller Standort"
+            },
+            "native": {}
+        },
+        {
+            "_id": "phone.away",
+            "type": "state",
+            "common": {
+                "role": "indicator",
+                "name": "Gilt aktuell als unterwegs",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        },
+        {
+            "_id": "phone.level",
+            "type": "state",
+            "common": {
+                "role": "value",
+                "name": "Aktuelle Warnstufe (Standort)",
+                "type": "number",
+                "read": true,
+                "write": false,
+                "def": 0,
+                "states": {
+                    "0": "ruhig",
+                    "1": "Hinweis",
+                    "2": "Warnung"
+                }
+            },
+            "native": {}
+        },
+        {
+            "_id": "phone.distanceKm",
+            "type": "state",
+            "common": {
+                "role": "value.distance",
+                "name": "Entfernung des letzten relevanten Blitzes (Standort)",
+                "type": "number",
+                "unit": "km",
+                "read": true,
+                "write": false,
+                "def": null
             },
             "native": {}
         }
