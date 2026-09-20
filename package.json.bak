@@ -1,6 +1,6 @@
 {
   "name": "iobroker.blitzwarnung",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Gewitter-/Blitzwarnung ueber den Blitzortung.org Live-Feed mit Telegram- und Pushover-Benachrichtigung",
   "author": {
     "name": "groej77",
