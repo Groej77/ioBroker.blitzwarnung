@@ -1,15 +1,16 @@
 {
   "name": "iobroker.blitzwarnung",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "Gewitter-/Blitzwarnung ueber den Blitzortung.org Live-Feed mit Telegram- und Pushover-Benachrichtigung",
   "author": {
     "name": "groej77",
     "email": "groej77@gmx.de"
   },
   "contributors": [],
-  "homepage": "https://github.com/groej77/ioBroker.blitzwarnung",
+  "homepage": "https://github.com/Groej77/ioBroker.blitzwarnung",
   "license": "MIT",
   "keywords": [
+    "ioBroker",
     "blitz",
     "lightning",
     "gewitter",
@@ -19,7 +20,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/groej77/ioBroker.blitzwarnung.git"
+    "url": "https://github.com/Groej77/ioBroker.blitzwarnung.git"
   },
   "engines": {
     "node": ">= 20"
@@ -63,7 +64,7 @@
     "release": "release-script"
   },
   "bugs": {
-    "url": "https://github.com/groej77/ioBroker.blitzwarnung/issues"
+    "url": "https://github.com/Groej77/ioBroker.blitzwarnung/issues"
   },
   "readmeFilename": "README.md"
 }

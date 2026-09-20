@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "blitzwarnung",
-        "version": "0.0.2",
+        "version": "0.0.1",
         "news": {
+            "0.0.2": {
+                "en": "New adapter icon (cloud with lightning bolt instead of the wizard)",
+                "de": "Neues Adapter-Icon (Wolke mit Blitz statt Zauberer)",
+                "ru": "Новый значок адаптера (облако с молнией вместо волшебника)",
+                "pt": "Novo ícone do adaptador (nuvem com raio em vez do mago)",
+                "nl": "Nieuw adapterpictogram (wolk met bliksem in plaats van de tovenaar)",
+                "fr": "Nouvelle icône d'adaptateur (nuage avec éclair au lieu du magicien)",
+                "it": "Nuova icona dell'adattatore (nuvola con fulmine invece del mago)",
+                "es": "Nuevo icono del adaptador (nube con rayo en lugar del mago)",
+                "pl": "Nowa ikona adaptera (chmura z błyskawicą zamiast czarodzieja)",
+                "uk": "Нова піктограма адаптера (хмара з блискавкою замість чарівника)",
+                "zh-cn": "新的适配器图标(带闪电的云,而不是巫师)"
+            },
             "0.0.1": {
                 "en": "initial release",
                 "de": "Erstveröffentlichung",
@@ -47,6 +60,7 @@
             "groej77 <groej77@gmx.de>"
         ],
         "keywords": [
+            "ioBroker",
             "blitz",
             "lightning",
             "gewitter",
@@ -61,8 +75,8 @@
         "platform": "Javascript/Node.js",
         "icon": "blitzwarnung.png",
         "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/groej77/ioBroker.blitzwarnung/main/admin/blitzwarnung.png",
-        "readme": "https://github.com/groej77/ioBroker.blitzwarnung/blob/main/README.md",
+        "extIcon": "https://raw.githubusercontent.com/Groej77/ioBroker.blitzwarnung/main/admin/blitzwarnung.png",
+        "readme": "https://github.com/Groej77/ioBroker.blitzwarnung/blob/main/README.md",
         "loglevel": "info",
         "tier": 3,
         "mode": "daemon",
