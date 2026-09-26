@@ -31,6 +31,8 @@ class Blitzwarnung extends utils.Adapter {
         this.statsClearTimer = null;
         this.serverIndex = 0;
         this.stopping = false;
+        this.disconnectedSince = null;
+        this.longOutageWarned = false;
 
         this.homeLat = 0;
         this.homeLon = 0;
@@ -384,12 +386,25 @@ class Blitzwarnung extends utils.Adapter {
     // -----------------------------------------------------------------
     connect() {
         const url = WS_SERVERS[this.serverIndex % WS_SERVERS.length];
-        this.log.info(`Verbinde mit Blitzortung-Server: ${url}`);
+        this.log.debug(`Verbinde mit Blitzortung-Server: ${url}`);
 
         this.ws = new WebSocket(url);
 
         this.ws.on('open', () => {
-            this.log.info('Verbindung zu Blitzortung.org hergestellt.');
+            if (this.disconnectedSince) {
+                if (this.longOutageWarned) {
+                    const downtimeMinutes = Math.round((Date.now() - this.disconnectedSince) / 60000);
+                    this.log.info(
+                        `Verbindung zu Blitzortung.org wiederhergestellt (Ausfall dauerte ca. ${downtimeMinutes} Minute(n), Server: ${url}).`,
+                    );
+                } else {
+                    this.log.debug(`Verbindung zu Blitzortung.org hergestellt (Server: ${url}).`);
+                }
+                this.disconnectedSince = null;
+                this.longOutageWarned = false;
+            } else {
+                this.log.info('Verbindung zu Blitzortung.org hergestellt.');
+            }
             this.setState('info.connection', true, true);
 
             // Zwei unterschiedliche "Anmelde"-Varianten sind fuer dieses
@@ -464,7 +479,23 @@ class Blitzwarnung extends utils.Adapter {
             }
 
             this.serverIndex++; // beim naechsten Versuch anderen Server probieren
-            this.log.warn(
+
+            if (!this.disconnectedSince) {
+                this.disconnectedSince = Date.now();
+            }
+
+            const warnThresholdMinutes = this.config.noServerWarnMinutes || 0;
+            const downtimeMinutes = (Date.now() - this.disconnectedSince) / 60000;
+
+            if (warnThresholdMinutes > 0 && downtimeMinutes >= warnThresholdMinutes && !this.longOutageWarned) {
+                this.longOutageWarned = true;
+                this.log.warn(
+                    `Seit ueber ${warnThresholdMinutes} Minute(n) konnte kein Blitzortung-Server erreicht werden ` +
+                        `(zuletzt versucht: ${url}). Versuche im Hintergrund weiter...`,
+                );
+            }
+
+            this.log.debug(
                 `Verbindung zu Blitzortung.org getrennt, versuche erneut in ${this.config.reconnectDelaySeconds}s mit naechstem Server...`,
             );
             this.scheduleReconnect();

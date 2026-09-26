@@ -193,6 +193,12 @@
             "type": "number",
             "label": "Debug-Zusammenfassung alle (Sek, 0 = aus)",
             "xs": 12, "sm": 6, "md": 4, "lg": 3
+        },
+        "noServerWarnMinutes": {
+            "type": "number",
+            "label": "Warnung im Log erst nach (Min) ohne erreichbaren Server (0 = aus)",
+            "newLine": true,
+            "xs": 12, "sm": 6, "md": 4, "lg": 3
         }
     }
 }
