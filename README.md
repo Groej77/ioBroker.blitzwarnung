@@ -39,7 +39,9 @@ und wiederholt sich, bis man die Meldung bestaetigt.
   Emergency-Prioritaet.
 * **Aktueller Standort (optional)** - an/aus, States mit Breiten-/Laengengrad des aktuellen Standorts, ab
   welcher Entfernung von der Wohnung man als "unterwegs" gilt, und wie alt der Standort maximal sein darf.
-* **Verbindung (erweitert)** - Reconnect-Wartezeit, Heartbeat-Intervall, Debug-Zusammenfassungs-Intervall.
+* **Verbindung (erweitert)** - Reconnect-Wartezeit, Heartbeat-Intervall, Debug-Zusammenfassungs-Intervall, sowie ab
+  wann eine Warnung im Log erscheint, falls ueber laengere Zeit kein Blitzortung-Server erreichbar ist (routinemaessige
+  Serverwechsel selbst landen nur noch im Debug-Log, nicht mehr im normalen Adapter-Log).
 
 ### States
 | State | Beschreibung |
@@ -68,6 +70,10 @@ Derselbe Weg funktioniert auch fuer spaetere Updates, nachdem Aenderungen ins Re
 -->
 
 ### **WORK IN PROGRESS**
+
+### 0.0.3 (2026-09-26)
+* (Groej77) Log-Rauschen reduziert: routinemaessige Serverwechsel werden nur noch als Debug geloggt, eine
+  Warnung erscheint erst, wenn ueber einen einstellbaren Zeitraum kein Blitzortung-Server erreichbar war
 
 ### 0.0.2 (2026-09-20)
 * (Groej77) Neues Adapter-Icon (Wolke mit Blitz statt Zauberer)

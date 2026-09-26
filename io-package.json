@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "blitzwarnung",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "news": {
+            "0.0.3": {
+                "en": "Reduced log noise: routine server switches are now logged at debug level; a warning only appears once no Blitzortung server could be reached for a configurable time.",
+                "de": "Weniger Log-Rauschen: routinemaessige Serverwechsel werden jetzt nur noch als Debug geloggt; eine Warnung erscheint erst, wenn ueber einen einstellbaren Zeitraum kein Blitzortung-Server erreichbar war.",
+                "ru": "Меньше записей в логе: обычная смена сервера теперь логируется только на уровне debug; предупреждение появляется только если ни один сервер Blitzortung не был доступен в течение настраиваемого времени.",
+                "pt": "Menos ruido no log: trocas de servidor rotineiras agora sao registradas apenas em nivel debug; um aviso so aparece quando nenhum servidor Blitzortung pode ser alcancado por um tempo configuravel.",
+                "nl": "Minder log-ruis: routinematige serverwissels worden nu alleen op debug-niveau gelogd; een waarschuwing verschijnt pas als gedurende een instelbare tijd geen Blitzortung-server bereikbaar was.",
+                "fr": "Moins de bruit dans le journal : les changements de serveur habituels sont desormais journalises uniquement en debug ; un avertissement n'apparait que si aucun serveur Blitzortung n'a ete joignable pendant une duree configurable.",
+                "it": "Meno rumore nei log: i normali cambi di server vengono ora registrati solo a livello debug; un avviso compare solo se nessun server Blitzortung e stato raggiungibile per un tempo configurabile.",
+                "es": "Menos ruido en el registro: los cambios de servidor rutinarios ahora se registran solo en nivel debug; un aviso solo aparece si ningun servidor Blitzortung fue alcanzable durante un tiempo configurable.",
+                "pl": "Mniej wpisow w logu: rutynowe zmiany serwera sa teraz logowane tylko na poziomie debug; ostrzezenie pojawia sie dopiero, gdy przez ustawiony czas nie udalo sie polaczyc z zadnym serwerem Blitzortung.",
+                "uk": "Менше записів у логах: звичайна зміна сервера тепер логується лише на рівні debug; попередження з'являється лише якщо жоден сервер Blitzortung не був доступний протягом налаштовуваного часу.",
+                "zh-cn": "减少日志噪音:常规的服务器切换现在仅以debug级别记录;只有在可配置的时间内无法连接任何Blitzortung服务器时才会显示警告。"
+            },
             "0.0.2": {
                 "en": "New adapter icon (cloud with lightning bolt instead of the wizard)",
                 "de": "Neues Adapter-Icon (Wolke mit Blitz statt Zauberer)",
@@ -121,7 +134,8 @@
         "phoneLocationMaxAgeMinutes": 20,
         "reconnectDelaySeconds": 10,
         "heartbeatIntervalSeconds": 30,
-        "debugSummaryIntervalSeconds": 60
+        "debugSummaryIntervalSeconds": 60,
+        "noServerWarnMinutes": 10
     },
     "objects": [],
     "instanceObjects": [
