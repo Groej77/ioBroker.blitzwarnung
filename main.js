@@ -45,6 +45,13 @@ class Blitzwarnung extends utils.Adapter {
             phone: { lastLevel: 0, lastAnnounceTime: 0 },
         };
 
+        // Zwischengespeicherter zuletzt GESCHRIEBENER Wert von home.level/phone.level
+        // und phone.away - damit wir bei jedem der weltweit sehr haeufigen
+        // Blitz-Events nicht unnoetig denselben Wert erneut in die States schreiben
+        // (das liesse nur den Zeitstempel "zuletzt aktualisiert" hochticken).
+        this.lastWrittenLevel = { home: null, phone: null };
+        this.lastWrittenAway = null;
+
         this.locationLabels = {
             home: 'in der Naehe Ihrer Wohnung',
             phone: 'in der Naehe Ihres Standortes',
@@ -284,6 +291,12 @@ class Blitzwarnung extends utils.Adapter {
     }
 
     startStatsClearTimer() {
+        // Einmal sofort pruefen (z.B. falls der Adapter nach mehreren blitzfreien
+        // Tagen neu gestartet wird und der Tageszaehler noch einen alten Wert traegt)
+        this.resetDailyCounterIfNewDay().catch(err =>
+            this.log.error(`Fehler beim Pruefen des Tageswechsels: ${err.message}`),
+        );
+
         this.statsClearTimer = this.setInterval(async () => {
             if (
                 !this.statsDistanceCleared &&
@@ -297,7 +310,34 @@ class Blitzwarnung extends utils.Adapter {
                     `Gewitter-Entfernung zurueckgesetzt - seit ${this.config.statsClearAfterMinutes} Minuten kein relevanter Blitz mehr.`,
                 );
             }
+
+            await this.resetDailyCounterIfNewDay();
         }, 60 * 1000);
+    }
+
+    // -----------------------------------------------------------------
+    // Der Tageszaehler (home.lightningCountToday) wird bisher nur beim
+    // naechsten tatsaechlichen Blitz auf den neuen Tag umgestellt. Bleibt es
+    // mehrere Tage ruhig, wuerde er faelschlich den alten Wert weiter anzeigen -
+    // deshalb wird hier unabhaengig von neuen Blitzen minuetlich auf
+    // Tageswechsel geprueft und bei Bedarf auf 0 zurueckgesetzt.
+    // -----------------------------------------------------------------
+    async resetDailyCounterIfNewDay() {
+        const counterState = await this.getStateAsync('home.lightningCountToday');
+        if (!counterState || counterState.val === 0) {
+            return;
+        }
+
+        const now = new Date();
+        const lastChange = counterState.lc ? new Date(counterState.lc) : null;
+        const isNewDay = !lastChange || lastChange.toDateString() !== now.toDateString();
+
+        if (isNewDay) {
+            await this.setStateAsync('home.lightningCountToday', 0, true);
+            this.log.debug(
+                'Taeglicher Blitz-Zaehler zurueckgesetzt (neuer Tag, seit Mitternacht noch kein relevanter Blitz).',
+            );
+        }
     }
 
     // -----------------------------------------------------------------
@@ -308,7 +348,10 @@ class Blitzwarnung extends utils.Adapter {
     async evaluateAndAnnounce(key, distanceKm) {
         const level = this.getLevel(distanceKm);
 
-        await this.setStateAsync(`${key}.level`, level, true);
+        if (this.lastWrittenLevel[key] !== level) {
+            await this.setStateAsync(`${key}.level`, level, true);
+            this.lastWrittenLevel[key] = level;
+        }
         if (level === 0) {
             return;
         }
@@ -370,14 +413,18 @@ class Blitzwarnung extends utils.Adapter {
         if (phoneLoc) {
             const phoneDistanceFromHomeKm = this.haversineKm(this.homeLat, this.homeLon, phoneLoc.lat, phoneLoc.lon);
             const isAway = phoneDistanceFromHomeKm > this.config.awayThresholdKm;
-            await this.setStateAsync('phone.away', isAway, true);
+            if (this.lastWrittenAway !== isAway) {
+                await this.setStateAsync('phone.away', isAway, true);
+                this.lastWrittenAway = isAway;
+            }
 
             if (isAway) {
                 const distancePhoneKm = this.haversineKm(phoneLoc.lat, phoneLoc.lon, strike.lat, strike.lon);
                 await this.evaluateAndAnnounce('phone', distancePhoneKm);
             }
-        } else {
+        } else if (this.lastWrittenAway !== false) {
             await this.setStateAsync('phone.away', false, true);
+            this.lastWrittenAway = false;
         }
     }
 

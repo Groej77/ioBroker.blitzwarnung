@@ -1,8 +1,34 @@
 {
     "common": {
         "name": "blitzwarnung",
-        "version": "0.0.3",
+        "version": "0.0.5",
         "news": {
+            "0.0.5": {
+                "en": "Fixed: home.level and phone.away were rewritten on every lightning strike received worldwide (many times per second), even when the value did not change, causing needless load. They are now only written when the value actually changes.",
+                "de": "Fehlerbehebung: home.level und phone.away wurden bei jedem weltweit empfangenen Blitz (teils mehrmals pro Sekunde) neu geschrieben, auch wenn sich der Wert nicht geaendert hat. Das erzeugte unnoetige Last. Jetzt wird nur noch geschrieben, wenn sich der Wert tatsaechlich aendert.",
+                "ru": "Исправление: home.level и phone.away перезаписывались при каждом ударе молнии в мире (иногда несколько раз в секунду), даже если значение не менялось. Теперь запись происходит только при фактическом изменении значения.",
+                "pt": "Correcao: home.level e phone.away eram regravados a cada raio recebido em todo o mundo (por vezes varias vezes por segundo), mesmo sem alteracao do valor. Agora so sao gravados quando o valor realmente muda.",
+                "nl": "Bugfix: home.level en phone.away werden bij elke wereldwijd ontvangen bliksem herschreven (soms meerdere keren per seconde), ook als de waarde niet veranderde. Nu wordt alleen geschreven als de waarde echt verandert.",
+                "fr": "Correction : home.level et phone.away etaient reecrits a chaque eclair recu dans le monde (parfois plusieurs fois par seconde), meme sans changement de valeur. Ils ne sont desormais ecrits que lorsque la valeur change reellement.",
+                "it": "Correzione: home.level e phone.away venivano riscritti ad ogni fulmine ricevuto nel mondo (a volte piu volte al secondo), anche senza variazione del valore. Ora vengono scritti solo quando il valore cambia davvero.",
+                "es": "Correccion: home.level y phone.away se reescribian con cada rayo recibido en todo el mundo (a veces varias veces por segundo), incluso sin cambiar el valor. Ahora solo se escriben cuando el valor realmente cambia.",
+                "pl": "Poprawka: home.level i phone.away byly zapisywane ponownie przy kazdym wyladowaniu odbieranym na swiecie (czasem kilka razy na sekunde), nawet gdy wartosc sie nie zmieniala. Teraz sa zapisywane tylko przy faktycznej zmianie wartosci.",
+                "uk": "Виправлення: home.level і phone.away перезаписувалися при кожному ударі блискавки у світі (іноді кілька разів на секунду), навіть якщо значення не змінювалося. Тепер запис відбувається лише при фактичній зміні значення.",
+                "zh-cn": "修复:每次全球接收到闪电(有时每秒多次)都会重写home.level和phone.away,即使数值没有变化,造成不必要的负载。现在仅在数值实际变化时才写入。"
+            },
+            "0.0.4": {
+                "en": "Fixed: the daily lightning counter (home.lightningCountToday) could get stuck at its last value if no relevant strike occurred after midnight, since the day-change check only ran when a strike happened. It is now also checked every minute independently of strikes.",
+                "de": "Fehlerbehebung: Der taegliche Blitz-Zaehler (home.lightningCountToday) konnte bei laengerer Ruhe auf dem letzten Wert stehen bleiben, weil die Tageswechsel-Pruefung bisher nur bei einem tatsaechlichen Blitz lief. Sie wird jetzt zusaetzlich unabhaengig davon jede Minute geprueft.",
+                "ru": "Исправление: суточный счетчик молний (home.lightningCountToday) мог оставаться на последнем значении, если после полуночи не было ни одного удара, так как проверка смены дня выполнялась только при ударе молнии. Теперь она также проверяется каждую минуту независимо от ударов.",
+                "pt": "Correcao: o contador diario de raios (home.lightningCountToday) podia ficar travado no ultimo valor se nenhum raio relevante ocorresse apos a meia-noite, pois a verificacao de mudanca de dia so era executada quando havia um raio. Agora tambem e verificada a cada minuto, independente de raios.",
+                "nl": "Bugfix: de dagelijkse bliksemteller (home.lightningCountToday) kon blijven hangen op de laatste waarde als er na middernacht geen relevante bliksem meer was, omdat de dagwisseling-check alleen bij een bliksem werd uitgevoerd. Dit wordt nu ook elke minuut onafhankelijk gecontroleerd.",
+                "fr": "Correction : le compteur quotidien d'eclairs (home.lightningCountToday) pouvait rester bloque sur sa derniere valeur si aucun eclair pertinent ne se produisait apres minuit, car la verification du changement de jour ne s'executait qu'a la survenue d'un eclair. Elle est desormais aussi verifiee chaque minute independamment.",
+                "it": "Correzione: il contatore giornaliero dei fulmini (home.lightningCountToday) poteva rimanere bloccato sull'ultimo valore se non si verificava alcun fulmine rilevante dopo mezzanotte, poiche il controllo del cambio giorno veniva eseguito solo in presenza di un fulmine. Ora viene controllato anche ogni minuto indipendentemente.",
+                "es": "Correccion: el contador diario de rayos (home.lightningCountToday) podia quedarse en su ultimo valor si no ocurria ningun rayo relevante despues de medianoche, ya que la comprobacion de cambio de dia solo se ejecutaba al producirse un rayo. Ahora tambien se comprueba cada minuto de forma independiente.",
+                "pl": "Poprawka: dzienny licznik blyskawic (home.lightningCountToday) mogl pozostac na ostatniej wartosci, jesli po polnocy nie wystapil zaden istotny wyladowanie, poniewaz sprawdzanie zmiany dnia dzialalo tylko przy wystapieniu blyskawicy. Teraz jest ono sprawdzane rowniez co minute, niezaleznie od blyskawic.",
+                "uk": "Виправлення: денний лічильник блискавок (home.lightningCountToday) міг залишатися на останньому значенні, якщо після півночі не було жодного удару, оскільки перевірка зміни дня виконувалася лише при ударі блискавки. Тепер вона також перевіряється щохвилини незалежно від ударів.",
+                "zh-cn": "修复:如果午夜后没有发生相关雷击,每日雷击计数器(home.lightningCountToday)可能会停留在最后一个值上,因为换天检测之前只在发生雷击时才运行。现在每分钟都会独立检测一次。"
+            },
             "0.0.3": {
                 "en": "Reduced log noise: routine server switches are now logged at debug level; a warning only appears once no Blitzortung server could be reached for a configurable time.",
                 "de": "Weniger Log-Rauschen: routinemaessige Serverwechsel werden jetzt nur noch als Debug geloggt; eine Warnung erscheint erst, wenn ueber einen einstellbaren Zeitraum kein Blitzortung-Server erreichbar war.",

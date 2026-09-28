@@ -57,7 +57,7 @@ und wiederholt sich, bis man die Meldung bestaetigt.
 
 ### Installation
 Der Adapter ist (noch) nicht im offiziellen ioBroker-Repository gelistet. Installation erfolgt ueber die
-Admin-Oberflaeche (Expertenmodus -> Adapter-Reiter -> GitHub-Icon -> "Benutzerdefiniert") oder per Kommandozeile:
+Admin-Oberflaeche (Adapter-Reiter -> GitHub-Icon -> "Benutzerdefiniert") oder per Kommandozeile:
 ```bash
 iobroker url https://github.com/Groej77/ioBroker.blitzwarnung
 ```
@@ -70,6 +70,17 @@ Derselbe Weg funktioniert auch fuer spaetere Updates, nachdem Aenderungen ins Re
 -->
 
 ### **WORK IN PROGRESS**
+
+### 0.0.5 (2026-09-28)
+* (Groej77) Fehlerbehebung: `home.level` und `phone.away` wurden bisher bei jedem weltweit empfangenen Blitz
+  (teils mehrmals pro Sekunde) neu in die States geschrieben, auch wenn sich der Wert gar nicht geaendert hat
+  (sichtbar am staendig hochtickenden Zeitstempel). Jetzt wird nur noch geschrieben, wenn sich der Wert
+  tatsaechlich aendert.
+
+### 0.0.4 (2026-09-28)
+* (Groej77) Fehlerbehebung: Der taegliche Blitz-Zaehler (`home.lightningCountToday`) konnte bei mehreren
+  blitzfreien Tagen auf dem letzten Wert stehen bleiben, da die Tageswechsel-Pruefung bisher nur bei einem
+  tatsaechlichen Blitz lief. Sie wird jetzt zusaetzlich jede Minute unabhaengig davon geprueft.
 
 ### 0.0.3 (2026-09-26)
 * (Groej77) Log-Rauschen reduziert: routinemaessige Serverwechsel werden nur noch als Debug geloggt, eine
